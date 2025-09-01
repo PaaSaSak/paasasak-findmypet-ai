@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Data & models
+dataset/
+*.pt
+*.pth
+*.onnx
+*.faiss
+*.npz
+*.npy
+*.ckpt
+
+# Training outputs
+runs/
+outputs/
+wandb/
+logs/
+
+# Env
+.env
