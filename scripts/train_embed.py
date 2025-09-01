@@ -34,15 +34,18 @@ class FolderDataset(Dataset):
     def __init__(self, root: str, img_size: int = 224):
         self.items = []
         self.img_size = img_size
-        # 각 클래스 디렉토리를 순회
-        for cid in sorted(os.listdir(root)):
-            pdir = Path(root) / cid
-            if not pdir.is_dir():
-                continue
-            # 해당 클래스의 모든 .jpg 파일을 수집
+
+        root_path = Path(root)
+        # 클래스 폴더명 수집 (문자/숫자 모두 허용)
+        class_names = [d.name for d in root_path.iterdir() if d.is_dir()]
+        class_names = sorted(class_names)  # 고정적인 인덱싱을 위해 정렬
+        self.class_to_idx = {name: i for i, name in enumerate(class_names)}
+
+        for cls in class_names:
+            pdir = root_path / cls
             for p in glob.glob(str(pdir / '*.jpg')):
-                # 라벨은 폴더명(정수 추정)으로 사용
-                self.items.append((p, int(cid)))
+                # 라벨은 class_to_idx로 치환
+                self.items.append((p, self.class_to_idx[cls]))
 
     def __len__(self):
         return len(self.items)
@@ -63,7 +66,7 @@ def get_loader(root: str, bs: int = 32, shuffle: bool = True):
     - num_workers는 CPU 상황에 따라 조정(Windows라면 0~2 권장)
     """
     ds = FolderDataset(root)
-    return DataLoader(ds, batch_size=bs, shuffle=shuffle, num_workers=4, pin_memory=True)
+    return DataLoader(ds, batch_size=bs, shuffle=shuffle, num_workers=2, pin_memory=True)
 
 
 def main(args):

@@ -23,10 +23,10 @@
 set -euo pipefail
 
 # 경량 모델로 시작 후, 필요시 s/m 등급으로 상향
-MODEL="yolov8n.pt"      # yolov8s.pt 로 변경하면 성능↑(시간/VRAM↑)
+MODEL="yolov8s.pt"      # yolov8s.pt 로 변경하면 성능↑(시간/VRAM↑)
 IMGSZ=640               # 입력 크기 (속도/정확도 트레이드오프)
-EPOCHS=50               # 에폭 수 (데이터 양/품질에 맞춰 조정)
-BATCH=16                # 배치 크기 (GPU 메모리에 맞춰 조정)
+EPOCHS=60               # 에폭 수 (데이터 양/품질에 맞춰 조정)
+BATCH=32                # 배치 크기 (GPU 메모리에 맞춰 조정)
 DEVICE=0                # GPU index (단일GPU=0)
 DATA="dataset/detect/data.yaml"  # 데이터 설정 파일
 
